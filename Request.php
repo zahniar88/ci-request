@@ -8,6 +8,21 @@ class Request
 {
 
     /**
+     * menyimpan data files
+     *
+     * @var array
+     */
+    protected $files = [];
+
+    /**
+     * nama file uang berhasil di upload
+     *
+     * @var array
+     */
+    public $uploadFileName = [];
+
+
+    /**
      * turunan dari variable error
      *
      * @var array
@@ -49,6 +64,53 @@ class Request
             }
         }
 
+    }
+
+    /**
+     * mengambil data file
+     *
+     * @param string $field
+     */
+    public function file(string $field)
+    {
+        $data = $_FILES[$field];
+
+        if ( is_array($data["name"]) ) {
+            for ($i=0; $i < count($data["name"]); $i++) { 
+                $file = [
+                    "name"      => $data["name"][$i],
+                    "type"      => $data["type"][$i],
+                    "tmp_name"  => $data["tmp_name"][$i],
+                    "error"     => $data["error"][$i],
+                    "size"      => $data["size"][$i],
+                ];
+
+                $this->files[$field . "[".$i."]"] = $file;
+            }
+        } else {
+            $this->files[$field] = $data;
+        }
+
+        return $this;
+    }
+
+    /**
+     * upload file
+     *
+     * @param string $dir
+     * @return void
+     */
+    public function upload(string $dir = "uploads/")
+    {
+        foreach ($this->files as $key => $value) {
+            $originalFileName   = pathinfo($value["name"], PATHINFO_FILENAME);
+            $extension          = pathinfo($value["name"], PATHINFO_EXTENSION);
+            $renameFile         = preg_replace("/[^a-zA-Z0-9]+/i", "", $originalFileName) . "-" . date("YmdHis") . "." . $extension;
+            
+            if ( move_uploaded_file($value["tmp_name"], $dir.$renameFile) ) {
+                $this->uploadFileName[$key] = $dir . $renameFile;
+            }
+        }
     }
 
 }

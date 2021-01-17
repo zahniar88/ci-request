@@ -52,19 +52,18 @@ class Validator_file
         $this->fieldDefault = $field;
         $data = $this->inputVal($field);
         $name = $data["name"] ?? "";
-        // var_dump($data);
         
         if ( is_array($name) ) {
             for ($i=0; $i < count($name); $i++) { 
                 $file = [
-                    'name' => $data['name'][$i],
-                    'tmp_name' => $data['tmp_name'][$i],
-                    'size' => $data['size'][$i],
-                    'type' => $data['type'][$i],
-                    'error' => $data['error'][$i],
+                    "name"      => $data["name"][array_keys($name)[$i]],
+                    "type"      => $data["type"][array_keys($name)[$i]],
+                    "tmp_name"  => $data["tmp_name"][array_keys($name)[$i]],
+                    "error"     => $data["error"][array_keys($name)[$i]],
+                    "size"      => $data["size"][array_keys($name)[$i]],
                 ];
 
-                $this->runValidator($field . "[" . $i . "]", $file, $rules);
+                $this->runValidator($field . "[" . array_keys($name)[$i] . "]", $file, $rules);
             }
         } else {
             $this->runValidator($field, $data, $rules);

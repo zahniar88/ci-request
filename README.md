@@ -1,4 +1,4 @@
-# Library untuk CodeIgniter
+# Library untuk CodeIgniter v3
 Library ini dibuat untuk memudahkan melakukan validasi dan pengambilan nilai request. Pada libary ini sudah terinclude validasi untuk string dan juga file.
 
 
@@ -240,6 +240,35 @@ $this->request->validate([
     "file" => ["mimes:jpg,jpeg,png,pdf,docx"]
 ])
 ```
+
+## Cara upload file
+Pada library ini juga tersedia fitur untuk upload file. Bisa untuk upload multiple file juga. Contoh seperti berikut:
+```php
+$this->request->file("file")->upload();
+// atau
+$this->request->file("file")->upload("dir/to/upload");
+```
+dan untuk mendapatkan nama file yang telah di upload bisa di lakukan seperti berikut:
+```php
+$this->request->uploadFileName;
+```
+Kode diatas akan menghasilkan keluaran data array. Jika kalian mengupload multiple file dalam bentuk array, maka respon yang di hasilkan dari kode di atas seperti berikut:
+```php
+array(
+    ["file[0]"] => "namafile.ext",
+    ["file[1]"] => "namafile.ext",
+    ...
+)
+```
+Jika file bukan multipe input
+```php
+array(
+    ["file"] => "namafile.ext",
+    ["gambar"] => "namafile.ext",
+    ...
+)
+```
+
 
 Untuk sementara validasi yang tersedia baru yang tertera diatas, akan di tambahkan di kemudian hari.
 

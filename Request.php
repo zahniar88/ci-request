@@ -32,11 +32,12 @@ class Request
     public function __construct() {
         $request_file   = $_FILES ?? [];
         $request_string = $_REQUEST ?? [];
+        $server         = $_SERVER;
 
-        $request = array_merge($request_file, $request_string);
+        $request = array_merge($request_file, $request_string, $server);
 
-        foreach (array_keys($request) as $key) {
-            $this->$key = $_FILES[$key] ?? $_REQUEST[$key];
+        foreach ($request as $key => $value) {
+            $this->$key = $value;
         }
     }
 
@@ -77,15 +78,17 @@ class Request
 
         if ( is_array($data["name"]) ) {
             for ($i=0; $i < count($data["name"]); $i++) { 
+                $name = array_keys($data["name"]);
+
                 $file = [
-                    "name"      => $data["name"][$i],
-                    "type"      => $data["type"][$i],
-                    "tmp_name"  => $data["tmp_name"][$i],
-                    "error"     => $data["error"][$i],
-                    "size"      => $data["size"][$i],
+                    "name"      => $data["name"][$name[$i]],
+                    "type"      => $data["type"][$name[$i]],
+                    "tmp_name"  => $data["tmp_name"][$name[$i]],
+                    "error"     => $data["error"][$name[$i]],
+                    "size"      => $data["size"][$name[$i]],
                 ];
 
-                $this->files[$field . "[".$i."]"] = $file;
+                $this->files[$field . "[".$name[$i]."]"] = $file;
             }
         } else {
             $this->files[$field] = $data;

@@ -239,7 +239,7 @@ class Validator_string
             $errors[array_key_last($errors)] = "dan " . end($errors);
         }
 
-        if ( $errors != "" ) {
+        if ( count($errors) > 0 ) {
             $this->setError($this->fieldAlias . " setidaknya mengandung 1 " . implode(", ", $errors));
         }
     }

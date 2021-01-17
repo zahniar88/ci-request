@@ -107,6 +107,14 @@ $this->request->validate([
 ])
 ```
 
+* Nullable, fungsi ini memperbolehkan inputan string atau file bernilai kosong. Contoh seperti berikut:
+```php
+$this->request->validate([
+    "nama" => ["nullable"],
+    "file" => ["nullable"],
+])
+```
+
 * Min, fungsi ini hanya dapat digunakan pada input string unutk sementara. Contoh seperti berikut
 ```php
 $this->request->validate([

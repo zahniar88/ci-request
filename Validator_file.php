@@ -92,7 +92,11 @@ class Validator_file
             $this->fieldValue   = $value;
             $this->fieldAlias   = trim(preg_replace("/[^a-zA-Z0-9]+/i", " ", ucfirst($field))) ;
 
-            $this->$func($params);
+            if ( $func == "nullable" && $this->fieldValue["name"] == "" ) {
+                return;
+            } else if ($func != "nullable") {
+                $this->$func($params);
+            }
         }
     }
 

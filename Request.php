@@ -111,8 +111,14 @@ class Request
             $renameFile         = preg_replace("/[^a-zA-Z0-9]+/i", "", $originalFileName) . "-" . date("YmdHis") . "." . $extension;
             
             if ( move_uploaded_file($value["tmp_name"], $dir.$renameFile) ) {
-                $this->uploadFileName[$key] = $dir . $renameFile;
+                $uploadFileName[$key] = $dir . $renameFile;
             }
+        }
+
+        if ( count($uploadFileName) <= 1 ) {
+            return end($uploadFileName);
+        } else {
+            return $uploadFileName;
         }
     }
 
